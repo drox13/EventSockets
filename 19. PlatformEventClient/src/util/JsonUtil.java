@@ -33,7 +33,6 @@ public class JsonUtil {
 	
 	public static String convertStringToStrigJson(String convert) {
 		JsonPrimitive primitive = new JsonPrimitive(convert);
-		System.out.println("formato enviado por el cliente: " + primitive.toString());
 		return primitive.toString();
 	}
 }

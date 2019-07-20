@@ -4,6 +4,8 @@ package util;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import models.entity.Concert;
 
@@ -35,5 +37,15 @@ public class Json {
 		String s = gson.fromJson(stringJSON, String.class);
 		System.out.println("formato que llego en el servidor: " + s);
 		return s;
+	}
+	
+	public static String convertVectorToStringJson (boolean[] tickest) {
+		JsonArray arrayJson = new JsonArray();
+		for (int i = 0; i < tickest.length; i++) {
+			JsonObject objJson = new JsonObject();
+			objJson.addProperty("ticket", tickest[i]);
+			arrayJson.add(objJson);
+		}
+		return arrayJson.toString();
 	}
 }

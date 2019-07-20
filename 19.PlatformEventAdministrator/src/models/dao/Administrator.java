@@ -41,11 +41,13 @@ public class Administrator {
 		try {
 			outputAdminitrator.writeUTF(RequestAdministrator.SENT_CONCERT.toString());
 			outputAdminitrator.writeUTF(Json.convertObjectJson(concert));
-			if(inputAdministrator.readUTF().equals("ok")) {
+			String aswerAdm = inputAdministrator.readUTF();
+			System.out.println("respuesta resivida admi:" + aswerAdm);
+			switch (AswerAdm.valueOf(aswerAdm)) {
+			case OK:
 				concertList.add(concert);
 				messageStatus = REGISTER_CONCERT;
-			}else {
-				
+				break;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

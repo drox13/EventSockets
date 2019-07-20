@@ -39,18 +39,40 @@ public class Client {
 			@Override
 			public void run() {
 				while(notifyOn) {
-					try {
-						managerObserverWindow.notifyNewConcert(inputClient.readUTF());
-						concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
-						managerObserverWindow.refreshConcertList(concertList);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//					try {
+//						String aswer = inputClient.readUTF();
+//						System.out.println("respuesta resivida den clinete: " + aswer);
+//						managerObserverWindow.notifyNewConcert(inputClient.readUTF());
+//						concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
+//						managerObserverWindow.refreshConcertList(concertList);
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+					aswer();
 				}
 			}
 		});
 		threadNotify.start();
+	}
+	
+	private void aswer() {
+		try {
+			String aswer = inputClient.readUTF();
+			System.out.println("respuesta resivida den clinete: " + aswer);
+			switch (AnswerClient.valueOf(aswer)) {
+			case NOTIFY_CONCERT_CLIENT:
+				managerObserverWindow.notifyNewConcert(inputClient.readUTF());
+				concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
+				managerObserverWindow.refreshConcertList(concertList);
+				break;
+			case SEND_VECTOR_TICKETS:
+				break;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public DataOutputStream getOutputClient() {

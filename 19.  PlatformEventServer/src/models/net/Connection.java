@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import models.dao.Answer;
 import models.dao.EventManager;
 import models.dao.Requests;
 import models.entity.Concert;
@@ -45,12 +46,14 @@ public class Connection implements Runnable{
 						case SENT_CONCERT:
 							Concert newConcert = Json.stringtoJson(inputConnection.readUTF());
 							eventManager.addConcert(newConcert);
-							outputConnection.writeUTF("ok");
+							outputConnection.writeUTF(Answer.OK.toString());
+							outputConnection.writeUTF(Answer.NOTIFY_CONCERT_CLIENT.toString());
 							eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
 							break;
 						case VIEW_CONCERT:
 							int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
 							searhConcert(idConcert);
+							outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
 							break;
 						}
 					}
@@ -61,14 +64,11 @@ public class Connection implements Runnable{
 		}
 	}
 	
-	public void searchVectorTickets(Concert concert) {
-	}
-	
-	public Concert searhConcert(int id) {
+	public boolean[] searhConcert(int id) {
 		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
 		for (Concert concert : copyConcertServer) {
 			if(concert.getId() == id) {
-				return concert;
+				return concert.getTickets();
 			}
 		}
 		throw new NullPointerException("no se encontro");

@@ -1,5 +1,5 @@
 package models.dao;
 
 public enum Answer {
-	NOTIFY_CONCERT
+	OK, NOTIFY_CONCERT_CLIENT, SEND_VECTOR_TICKETS
 }
