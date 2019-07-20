@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.swing.JButton;
 
 import models.net.Client;
-import models.net.RequestClient;
 import observer.ManagerObserverWindow;
 import util.JsonUtil;
 import view.Command;

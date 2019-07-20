@@ -34,4 +34,8 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	public void refreshConsert(ArrayList<Concert> concerts) {
 		panelCard.refreshPanelCard(concerts, actionListener);
 	}
+	
+	public static void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
 }

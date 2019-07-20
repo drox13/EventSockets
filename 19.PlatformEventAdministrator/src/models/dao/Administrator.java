@@ -29,8 +29,8 @@ public class Administrator {
 		outputAdminitrator.writeUTF(RequestAdministrator.ADMINISTRATOR.toString());
 	}
 
-	public static Concert creatConcert(String name, int numberTickets) {
-		return new Concert(name, numberTickets);
+	public static Concert creatConcert(String name) {
+		return new Concert(name);
 	}
 	
 	public ArrayList<Concert> getConcerts(){

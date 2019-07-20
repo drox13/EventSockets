@@ -36,7 +36,6 @@ public class Client {
 	private void notifyThis() {
 		notifyOn = true;
 		threadNotify = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				while(notifyOn) {

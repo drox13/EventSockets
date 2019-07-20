@@ -26,8 +26,7 @@ public class WindowsAdministrator extends JFrame{
 
 	public Concert createConcert() {
 		String nameConcert = JOptionPane.showInputDialog(this, "nombre del nuevo concieto");
-		int numberTickets = Integer.parseInt(JOptionPane.showInputDialog(this, "numero de voletas"));
-		return Administrator.creatConcert(nameConcert, numberTickets);
+		return Administrator.creatConcert(nameConcert);
 	}
 
 	public void filltable(ArrayList<Concert> concerts) {
