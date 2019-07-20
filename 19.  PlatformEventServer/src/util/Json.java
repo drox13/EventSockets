@@ -46,6 +46,7 @@ public class Json {
 			objJson.addProperty("ticket", tickest[i]);
 			arrayJson.add(objJson);
 		}
+		System.out.println("vector StrinJson" +arrayJson.toString());
 		return arrayJson.toString();
 	}
 }

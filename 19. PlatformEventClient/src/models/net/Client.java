@@ -39,16 +39,6 @@ public class Client {
 			@Override
 			public void run() {
 				while(notifyOn) {
-//					try {
-//						String aswer = inputClient.readUTF();
-//						System.out.println("respuesta resivida den clinete: " + aswer);
-//						managerObserverWindow.notifyNewConcert(inputClient.readUTF());
-//						concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
-//						managerObserverWindow.refreshConcertList(concertList);
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
 					aswer();
 				}
 			}
@@ -59,7 +49,7 @@ public class Client {
 	private void aswer() {
 		try {
 			String aswer = inputClient.readUTF();
-			System.out.println("respuesta resivida den clinete: " + aswer);
+			System.out.println("respuesta resivida en cliente: " + aswer);
 			switch (AnswerClient.valueOf(aswer)) {
 			case NOTIFY_CONCERT_CLIENT:
 				managerObserverWindow.notifyNewConcert(inputClient.readUTF());
@@ -67,6 +57,8 @@ public class Client {
 				managerObserverWindow.refreshConcertList(concertList);
 				break;
 			case SEND_VECTOR_TICKETS:
+				boolean booleans [] = JsonUtil.convertStringJsontoVector(inputClient.readUTF());
+				managerObserverWindow.fillDialog(booleans);
 				break;
 			}
 		} catch (IOException e) {

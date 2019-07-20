@@ -53,11 +53,11 @@ public class Server implements Runnable, IObserver{
 				String conectionType = inputConnection.readUTF();
 				switch (ConectionType.valueOf(conectionType)) {
 				case ADMINISTRATOR:
-					connectionsAmd = new Connection(socket, eventManager);
+					connectionsAmd = new Connection(socket, eventManager, false);
 					break;
 				case CLIENT:
 					DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-					Connection newConnection = new Connection(socket, eventManager);
+					Connection newConnection = new Connection(socket, eventManager, true);
 					dataOutputStream.writeUTF(Json.convertArrayListToStringJson(concertList));
 //					updateNewClient(concerts);
 					connections.add(newConnection);	

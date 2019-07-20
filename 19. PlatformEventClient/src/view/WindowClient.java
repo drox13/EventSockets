@@ -14,6 +14,7 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	private static final long serialVersionUID = 1L;
 	private PanelCard panelCard;
 	private ActionListener actionListener;
+	private DialogTickets dialogTickets;
 	
 	public WindowClient(ActionListener actionListener) {
 		this.actionListener = actionListener;
@@ -22,6 +23,7 @@ public class WindowClient extends JFrame implements IobserverWindow{
 		this.actionListener = actionListener;
 		panelCard = new PanelCard();
 		add(panelCard);
+		dialogTickets = new DialogTickets(this);
 		setVisible(true);
 	}
 	
@@ -38,4 +40,10 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	public static void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
+	
+	public void fillDialog(boolean[] booleans) {
+		dialogTickets.fillDialog(booleans);
+		dialogTickets.setVisible(true);
+	}
+
 }

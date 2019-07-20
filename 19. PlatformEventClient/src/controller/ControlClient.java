@@ -41,6 +41,7 @@ public class ControlClient implements ActionListener{
 		try {
 			client.getOutputClient().writeUTF(Command.VIEW_CONCERT.toString());
 			client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(id));
+//			dialogTickets.fillDialog(booleans);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

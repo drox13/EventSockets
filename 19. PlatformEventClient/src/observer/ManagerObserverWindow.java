@@ -18,4 +18,8 @@ public class ManagerObserverWindow {
 	public void refreshConcertList(ArrayList<Concert> concerts) {
 		observerWindows.refreshConsert(concerts);
 	}
+	
+	public void fillDialog(boolean[] booleans) {
+		observerWindows.fillDialog(booleans);
+	}
 }

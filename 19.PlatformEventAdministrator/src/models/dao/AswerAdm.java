@@ -1,5 +1,5 @@
 package models.dao;
 
 public enum AswerAdm {
-	OK
+	OK, NOTIFY_CONCERT_CLIENT
 }
