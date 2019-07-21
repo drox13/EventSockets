@@ -21,7 +21,7 @@ public class Client {
 	private boolean notifyOn;
 	private ArrayList<Concert> concertList;
 	private ManagerObserverWindow managerObserverWindow;
-	
+
 	public Client(ManagerObserverWindow managerObserverWindow) throws UnknownHostException, IOException {
 		socket = new Socket(HOST,PORT);
 		this.managerObserverWindow = managerObserverWindow;
@@ -65,6 +65,19 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void searchConcert(int idConcert, int positionByVector) {
+		for (Concert concert : concertList) {
+			if(concert.getId() == idConcert) {
+				concert.buyTicket(positionByVector);
+				managerObserverWindow.fillDialog(concert.getTickets());
+			}
+		}
+	}
+	
+	public ArrayList<Concert> getConcertList() {
+		return new ArrayList<>(concertList);
 	}
 	
 	public DataOutputStream getOutputClient() {

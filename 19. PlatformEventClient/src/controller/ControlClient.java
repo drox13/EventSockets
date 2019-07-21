@@ -16,7 +16,8 @@ public class ControlClient implements ActionListener{
 	private Client client;
 	private WindowClient windowClient;
 	private ManagerObserverWindow managerObserverWindow;
-	
+	private String idConcert = ""; 
+
 	public ControlClient() {
 		windowClient = new WindowClient(this);
 		managerObserverWindow = new ManagerObserverWindow(windowClient);
@@ -30,18 +31,27 @@ public class ControlClient implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		 
 		switch (Command.valueOf(e.getActionCommand())) {
 		case VIEW_CONCERT:
-			viewConcert(((JButton)e.getSource()).getName());
+			idConcert = ((JButton)e.getSource()).getName();
+			viewConcert(idConcert);
+			break;
+		case SEND_ID_CONCERT_AND_TICKET:
+			System.out.println( "ctl c: line 40: " + idConcert);
+			sendIdConcertAndTicket(idConcert, ((JButton)e.getSource()).getName());
 			break;
 		}
+	}
+
+	private void sendIdConcertAndTicket(String idConcert, String idTicket) {
+		client.searchConcert(Integer.parseInt(idConcert), Integer.parseInt(idTicket));
 	}
 
 	private void viewConcert(String id) {
 		try {
 			client.getOutputClient().writeUTF(Command.VIEW_CONCERT.toString());
 			client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(id));
-//			dialogTickets.fillDialog(booleans);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

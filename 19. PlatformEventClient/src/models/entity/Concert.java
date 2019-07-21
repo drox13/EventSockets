@@ -6,12 +6,18 @@ public class Concert {
 	private String name;
 	private boolean [] tickets;
 	private int numberTickets;
+	
 	public Concert(String name) {
 		this.name = name;
 		this.numberTickets = 4;
 		tickets = new boolean[numberTickets];
-		id =++count;
+		id =+count;
 	}
+	
+	public void buyTicket(int positionByVector) {
+		tickets[positionByVector] = true;
+	}
+	
 	public int getId() {
 		return id;
 	}

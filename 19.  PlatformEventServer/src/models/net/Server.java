@@ -40,10 +40,6 @@ public class Server implements Runnable, IObserver{
 		return new Concert(name);
 	}
 	
-	public ArrayList<Concert> getListConcert() {
-		return new ArrayList<>(concertList);
-	}
-	
 	@Override
 	public void run() {
 		while (serverOn) {
@@ -56,10 +52,10 @@ public class Server implements Runnable, IObserver{
 					connectionsAmd = new Connection(socket, eventManager, false);
 					break;
 				case CLIENT:
+					System.out.println("entro un cliente");
 					DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 					Connection newConnection = new Connection(socket, eventManager, true);
 					dataOutputStream.writeUTF(Json.convertArrayListToStringJson(concertList));
-//					updateNewClient(concerts);
 					connections.add(newConnection);	
 					break;
 				}
@@ -83,7 +79,7 @@ public class Server implements Runnable, IObserver{
 
 	@Override
 	public ArrayList<Concert> getConcerList() {
-		return getListConcert();
+		return new ArrayList<>(concertList);
 	}
 
 }

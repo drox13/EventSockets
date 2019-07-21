@@ -43,17 +43,15 @@ public class Connection implements Runnable{
 				if (inputConnection.available() > 0) {
 					String request = inputConnection.readUTF();
 					if(request!=null) {
-						System.out.println(request);
+						System.out.println("request server: " +request);
 						switch (Requests.valueOf(request)) {
 						case SENT_CONCERT:
 							Concert newConcert = Json.stringtoJson(inputConnection.readUTF());
 							eventManager.addConcert(newConcert);
-							if(user) {
-								outputConnection.writeUTF(Answer.NOTIFY_CONCERT_CLIENT.toString());
-								eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
-							}else {
+							if(!user) {
 								outputConnection.writeUTF(Answer.OK.toString());
 							}
+							eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
 							break;
 						case VIEW_CONCERT:
 							int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
@@ -83,6 +81,7 @@ public class Connection implements Runnable{
 
 	public void notifyConections(String message, String concertToJson) {
 		try {
+			outputConnection.writeUTF(Answer.NOTIFY_CONCERT_CLIENT.toString());
 			outputConnection.writeUTF(message);
 			outputConnection.writeUTF(concertToJson);
 		} catch (IOException e) {

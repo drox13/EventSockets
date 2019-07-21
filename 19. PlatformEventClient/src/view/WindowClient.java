@@ -42,8 +42,7 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	}
 	
 	public void fillDialog(boolean[] booleans) {
-		dialogTickets.fillDialog(booleans);
+		dialogTickets.fillDialog(booleans, actionListener);
 		dialogTickets.setVisible(true);
 	}
-
 }

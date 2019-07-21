@@ -14,7 +14,7 @@ public class Card extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private static final String TITLE_CARD = "Concierto";
 	private static final String TXT_BTN = "Ver Voletas";
-	
+
 	public Card(Concert concert, ActionListener actionListener) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JLabel lbTitleCard = new JLabel(TITLE_CARD);

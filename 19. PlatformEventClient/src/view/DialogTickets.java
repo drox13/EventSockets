@@ -2,10 +2,12 @@ package view;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class DialogTickets extends JDialog{
 
@@ -14,30 +16,39 @@ public class DialogTickets extends JDialog{
 	private final String TITLE = "Voletas";
 	private final String SEND = "Vendido";
 	private final String AVAILABLE = "Disponible";
-	
+	private JPanel panelContenBtn;
+	private JButton btn;
+
 	public DialogTickets(JFrame frame) {
 		super(frame);
 		setTitle(TITLE);
 		setLocationRelativeTo(frame);
-		setLayout(new GridLayout(2, 2));
 		setSize(SIZE_DIALOG, SIZE_DIALOG);
 		setModal(true);
+		panelContenBtn = new JPanel();
+		panelContenBtn.setLayout(new GridLayout(2, 2));
 	}
-	
-	public void fillDialog(boolean[] booleans) {
+
+	public void fillDialog(boolean[] booleans, ActionListener actionListener) {
+		panelContenBtn.removeAll();
 		for (int i = 0; i < booleans.length; i++) {
-			JButton btn = new JButton();
+			btn = new JButton();
+			btn.addActionListener(actionListener);
+			btn.setActionCommand(Command.SEND_ID_CONCERT_AND_TICKET.toString());
+			btn.setName(String.valueOf(i));
+			panelContenBtn.add(btn);
 			if(booleans[i]) {
-				btn.setText(SEND);
+				btn.setText(SEND + " " + btn.getName());
 				btn.setBackground(Color.RED);
 				btn.setEnabled(false);
 			}else {
-				btn.setText(AVAILABLE);
+				btn.setText(AVAILABLE + " " + btn.getName());
 				btn.setBackground(Color.GREEN);
 			}
-			add(btn);
+			add(panelContenBtn);
 		}
 		revalidate();
 		repaint();
 	}
+
 }

@@ -13,9 +13,7 @@ public class Json {
 	private static final Gson gson = new Gson();
 	
 	public static Concert stringtoJson(String stringJson) {
-		System.out.println("asi llega el formato al server: "+ stringJson);
 		Concert concert = gson.fromJson(stringJson, Concert.class);
-		System.out.println("asi sale del metodo server: " + concert);
 		return concert;
 	}
 	
@@ -35,7 +33,6 @@ public class Json {
 	
 	public static String convertStringJsonToString(String stringJSON) {
 		String s = gson.fromJson(stringJSON, String.class);
-		System.out.println("formato que llego en el servidor: " + s);
 		return s;
 	}
 	
@@ -46,7 +43,6 @@ public class Json {
 			objJson.addProperty("ticket", tickest[i]);
 			arrayJson.add(objJson);
 		}
-		System.out.println("vector StrinJson" +arrayJson.toString());
 		return arrayJson.toString();
 	}
 }

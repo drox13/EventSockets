@@ -48,8 +48,6 @@ public class Administrator {
 				concertList.add(concert);
 				messageStatus = REGISTER_CONCERT;
 				break;
-			case NOTIFY_CONCERT_CLIENT:
-				break;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

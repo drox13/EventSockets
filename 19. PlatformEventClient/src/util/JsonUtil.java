@@ -29,7 +29,6 @@ public class JsonUtil {
 		try {
 			Type typeListConcert = new TypeToken<List<Concert>>(){}.getType();
 			concerts = gson.fromJson(arrayJson, typeListConcert);
-			return concerts;
 		} catch (Exception e) {
 			WindowClient.showMessage(MESSAGE_ERROR);
 		}
@@ -52,7 +51,6 @@ public class JsonUtil {
 		}
 		return vectorTickestConcert;
 	}
-
 
 	private static void addVectorVTickestConcert(boolean[] vectorTickestConcert, boolean data) {
 		for (int i = 0; i < vectorTickestConcert.length; i++) {

@@ -6,7 +6,7 @@ import models.entity.Concert;
 
 public class ManagerObserverWindow {
 	private IobserverWindow observerWindows;
-	
+
 	public ManagerObserverWindow(IobserverWindow observerWindows) {
 		this.observerWindows = observerWindows;
 	}
