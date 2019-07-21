@@ -67,13 +67,26 @@ public class Client {
 		}
 	}
 	
-	public void searchConcert(int idConcert, int positionByVector) {
+	//sdas
+	
+	//sdas
+	
+	//sdas
+	
+	//sdas
+	
+	//sdas
+	
+	//sdas
+	public boolean[] searchConcert(int idConcert, int positionByVector)throws NullPointerException {
 		for (Concert concert : concertList) {
 			if(concert.getId() == idConcert) {
 				concert.buyTicket(positionByVector);
 				managerObserverWindow.fillDialog(concert.getTickets());
+				return concert.getTickets();
 			}
 		}
+		throw new NullPointerException("No se encontro el concierto");
 	}
 	
 	public ArrayList<Concert> getConcertList() {
@@ -87,4 +100,5 @@ public class Client {
 	public DataInputStream getInputClient() {
 		return inputClient;
 	}
+
 }

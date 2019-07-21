@@ -44,17 +44,26 @@ public class JsonUtil {
 		JsonParser parser = new JsonParser();
 		JsonArray vectorTickets = (JsonArray) parser.parse(stringJson);
 		boolean[] vectorTickestConcert = new boolean[vectorTickets.size()];
-		for (JsonElement job : vectorTickets) {
+		for(int i = 0; i < vectorTickets.size(); i++) {
+			JsonElement job = vectorTickets.get(i);
 			JsonObject obj = job.getAsJsonObject();
 			boolean statusTicket = obj.get(TICKETS).getAsBoolean();
-			addVectorVTickestConcert(vectorTickestConcert, statusTicket);
+			System.out.println("status Tickets: " + statusTicket);
+			vectorTickestConcert[i] = statusTicket;
 		}
 		return vectorTickestConcert;
 	}
 
-	private static void addVectorVTickestConcert(boolean[] vectorTickestConcert, boolean data) {
-		for (int i = 0; i < vectorTickestConcert.length; i++) {
-			vectorTickestConcert[i] = data;
+	public static String convertVectorToStringJson (boolean[] tickest) {
+		JsonObject objBig  = new JsonObject();
+		JsonArray arrayJson = new JsonArray();
+		for (int i = 0; i < tickest.length; i++) {
+			JsonObject objJson = new JsonObject();
+			objJson.addProperty("ticket", tickest[i]);
+			arrayJson.add(objJson);
 		}
+		objBig.add("tickets", arrayJson);
+		System.out.println(objBig.toString());
+		return objBig.toString();
 	}
 }

@@ -5,12 +5,15 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import models.entity.Concert;
 
 public class Json {
 	private static final Gson gson = new Gson();
+	private static final String TICKET = "ticket";
 	
 	public static Concert stringtoJson(String stringJson) {
 		Concert concert = gson.fromJson(stringJson, Concert.class);
@@ -32,8 +35,8 @@ public class Json {
 	}
 	
 	public static String convertStringJsonToString(String stringJSON) {
-		String s = gson.fromJson(stringJSON, String.class);
-		return s;
+		String string = gson.fromJson(stringJSON, String.class);
+		return string;
 	}
 	
 	public static String convertVectorToStringJson (boolean[] tickest) {
@@ -44,5 +47,21 @@ public class Json {
 			arrayJson.add(objJson);
 		}
 		return arrayJson.toString();
+	}
+	
+	public static boolean[] convertStringJsontoVector(String stringJson) {
+		System.out.println("llego asi al server: " + stringJson);
+		JsonParser parser = new JsonParser();
+		JsonObject objBig = parser.parse(stringJson).getAsJsonObject();
+		JsonArray vectorTickets = objBig.get("tickets").getAsJsonArray();
+		boolean[] vectorTickestConcert = new boolean[vectorTickets.size()];
+		for(int i = 0; i < vectorTickets.size(); i++) {
+			JsonElement job = vectorTickets.get(i);
+			JsonObject obj = job.getAsJsonObject();
+			boolean statusTicket = obj.get(TICKET).getAsBoolean();
+			System.out.println("status Tickets: " + statusTicket);
+			vectorTickestConcert[i] = statusTicket;
+		}
+		return vectorTickestConcert;
 	}
 }

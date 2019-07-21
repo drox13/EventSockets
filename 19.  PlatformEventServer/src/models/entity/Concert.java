@@ -25,8 +25,12 @@ public class Concert {
 		return tickets;
 	}
 	
+	public void setTickets(boolean[] tickets) {
+		this.tickets = tickets;
+	}
+	
 	@Override
 	public String toString() {
-		return id + name;
+		return "concierto: " + id +" "+ name + " " + tickets.toString();
 	}
 }
