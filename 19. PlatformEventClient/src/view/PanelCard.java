@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -10,6 +11,10 @@ import models.entity.Concert;
 public class PanelCard extends JPanel{
 
 	private static final long serialVersionUID = 1L;
+	
+	public PanelCard() {
+		setBackground(Color.WHITE);
+	}
 	
 	public void refreshPanelCard(ArrayList<Concert> concertList, ActionListener actionListener) {
 		removeAll();

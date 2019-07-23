@@ -53,29 +53,20 @@ public class Connection implements Runnable{
 							}
 							eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
 							break;
-						case VIEW_CONCERT:
+						case VIEW_TICKETS:
 							int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
 							if(user) {
 								outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
 								outputConnection.writeUTF(Json.convertVectorToStringJson(searhTicketsByConcert(idConcert)));
+								outputConnection.writeUTF(Json.convertStringToStrigJson(String.valueOf(idConcert)));
 							}
 							break;
 						case CONFIRM_PURCHASE:
 							int idConcertN = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
-							boolean [] v = Json.convertStringJsontoVector(inputConnection.readUTF());
+							boolean [] vectorClient = Json.convertStringJsontoVector(inputConnection.readUTF());
 							Concert concert = searhConcert(idConcertN);
-							concert.setTickets(v);
-							if(user) {
-								System.out.println(user);
-								outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
-								outputConnection.writeUTF(Json.convertVectorToStringJson(searhTicketsByConcert(idConcertN)));
-							}
-							
-							System.out.println(concert.toString());
-							boolean b [] = concert.getTickets();
-							for (int i = 0; i < b.length; i++) {
-								System.out.println(b[i]+ " swich");
-							}
+//							boolean[] ticketsServer = concert.getTickets();
+							concert.setTickets(vectorClient);
 							break;
 						}
 					}
@@ -85,7 +76,7 @@ public class Connection implements Runnable{
 			}
 		}
 	}
-	
+
 	public Concert searhConcert(int id) {
 		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
 		for (Concert concert : copyConcertServer) {

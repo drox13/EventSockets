@@ -36,10 +36,6 @@ public class Server implements Runnable, IObserver{
 		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto 3010");
 	}
 	
-	public static Concert createConcert(String name) {
-		return new Concert(name);
-	}
-	
 	@Override
 	public void run() {
 		while (serverOn) {
@@ -81,5 +77,8 @@ public class Server implements Runnable, IObserver{
 	public ArrayList<Concert> getConcerList() {
 		return new ArrayList<>(concertList);
 	}
-
+	
+	public Connection getConnectionsAmd() {
+		return connectionsAmd;
+	}
 }

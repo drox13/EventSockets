@@ -1,5 +1,8 @@
 package models.entity;
 
+import java.util.Calendar;
+
+import util.CalendarUtil;
 
 public class Concert {
 	private int id;
@@ -7,12 +10,14 @@ public class Concert {
 	private String name;
 	private boolean [] tickets;
 	private int numberTickets;
+	private Calendar date;
 	
-	public Concert(String name) {
+	public Concert(String name, int numberTickets, Calendar date) {
 		this.name = name;
-		this.numberTickets = 4;
+		this.numberTickets = numberTickets;
 		tickets = new boolean[numberTickets];
 		id = ++count;
+		this.date = date;
 	}
 	
 	public String getName() {
@@ -29,6 +34,6 @@ public class Concert {
 	}
 	
 	public Object[] toVectorTable() {
-		return new Object[] {id, name};
+		return new Object[] {id, name, numberTickets, CalendarUtil.toStringCalendar(date)};
 	}
 }

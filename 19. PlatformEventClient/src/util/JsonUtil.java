@@ -48,8 +48,9 @@ public class JsonUtil {
 			JsonElement job = vectorTickets.get(i);
 			JsonObject obj = job.getAsJsonObject();
 			boolean statusTicket = obj.get(TICKETS).getAsBoolean();
-			System.out.println("status Tickets: " + statusTicket);
-			vectorTickestConcert[i] = statusTicket;
+			if(statusTicket) {
+				vectorTickestConcert[i] = statusTicket;
+			}
 		}
 		return vectorTickestConcert;
 	}
@@ -63,7 +64,11 @@ public class JsonUtil {
 			arrayJson.add(objJson);
 		}
 		objBig.add("tickets", arrayJson);
-		System.out.println(objBig.toString());
 		return objBig.toString();
+	}
+	
+	public static String convertStringJsonToString(String stringJSON) {
+		String string = gson.fromJson(stringJSON, String.class);
+		return string;
 	}
 }

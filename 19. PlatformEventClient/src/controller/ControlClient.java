@@ -3,6 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+//import java.util.ArrayList;
 
 import javax.swing.JButton;
 
@@ -14,11 +15,13 @@ import view.Command;
 import view.WindowClient;
 
 public class ControlClient implements ActionListener{
+//	private static final String NO_TICKET_WAS_CHOSEN = "No se escogio ningun ticket";
 	private Client client;
 	private WindowClient windowClient;
 	private ManagerObserverWindow managerObserverWindow;
-	private String idConcert = ""; 
-	private String idTicket = ""; 
+	private String idConcert; 
+	private String idTicket;
+//	private ArrayList<String> ticketsSelect = new ArrayList<>();
 
 	public ControlClient() {
 		windowClient = new WindowClient(this);
@@ -34,44 +37,47 @@ public class ControlClient implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (Command.valueOf(e.getActionCommand())) {
-		case VIEW_CONCERT:
+		case VIEW_TICKETS:
 			idConcert = ((JButton)e.getSource()).getName();
 			viewConcert(idConcert);
 			break;
 		case SEND_ID_CONCERT_AND_TICKET:
-			System.out.println( "ctl c: line 40: " + idConcert);
 			idTicket = ((JButton)e.getSource()).getName();
 			sendIdConcertAndTicket(idConcert, idTicket);
 			break;
 		case CONFIRM_PURCHASE:
-			confirmPurchase();
+				confirmPurchase();
+				windowClient.closeDialog();
+			break;
+		case CANCEL_PURCHASE:
 			break;
 		}
 	}
-//
-//
-//
-//
-//
-	private void confirmPurchase() {
-		try {
-			client.getOutputClient().writeUTF(RequestClient.CONFIRM_PURCHASE.toString());
-			client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(idConcert));
-			client.getOutputClient().writeUTF(JsonUtil.convertVectorToStringJson(
-					sendIdConcertAndTicket(idConcert, idTicket)));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	private void confirmPurchase() throws NullPointerException{
+			try {
+				client.getOutputClient().writeUTF(RequestClient.CONFIRM_PURCHASE.toString());
+				client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(idConcert));
+				client.getOutputClient().writeUTF(JsonUtil.convertVectorToStringJson(
+						sendIdConcertAndTicket(idConcert, idTicket)));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 	}
 
-	private boolean[] sendIdConcertAndTicket(String idConcert, String idTicket) {
-		 return client.searchConcert(Integer.parseInt(idConcert), Integer.parseInt(idTicket));
+	private boolean[] sendIdConcertAndTicket(String idConcert, String idTicket) throws NullPointerException{
+		if(!idConcert.equals("")&& !idTicket.equals("")) {
+			return client.buyTicketsbyConcert(Integer.parseInt(idConcert), Integer.parseInt(idTicket));
+		}else {
+			throw new NullPointerException("null");
+		}
 	}
 
 	private void viewConcert(String id) {
 		try {
-			client.getOutputClient().writeUTF(Command.VIEW_CONCERT.toString());
+			client.getOutputClient().writeUTF(Command.VIEW_TICKETS.toString());
 			client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

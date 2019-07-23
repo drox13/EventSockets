@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 import models.entity.Concert;
 
@@ -25,6 +26,13 @@ public class Json {
 	}
 	
 	public static String convertArrayListToStringJson(ArrayList<Concert> concerts) {
+		JsonArray array = new JsonArray();
+		for (int i = 0; i < concerts.size(); i++) {
+			JsonObject obj = new JsonObject();
+			obj.addProperty("concert", gson.toJson(concerts.get(i)));
+			array.add(obj);
+		}
+		
 		String concertsJson = "[";
 		for (Concert concert : concerts) {
 			concertsJson+= gson.toJson(concert)+",";
@@ -50,7 +58,6 @@ public class Json {
 	}
 	
 	public static boolean[] convertStringJsontoVector(String stringJson) {
-		System.out.println("llego asi al server: " + stringJson);
 		JsonParser parser = new JsonParser();
 		JsonObject objBig = parser.parse(stringJson).getAsJsonObject();
 		JsonArray vectorTickets = objBig.get("tickets").getAsJsonArray();
@@ -63,5 +70,10 @@ public class Json {
 			vectorTickestConcert[i] = statusTicket;
 		}
 		return vectorTickestConcert;
+	}
+	
+	public static String convertStringToStrigJson(String convert) {
+		JsonPrimitive primitive = new JsonPrimitive(convert);
+		return primitive.toString();
 	}
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import models.entity.Concert;
 import util.Json;
@@ -29,8 +30,8 @@ public class Administrator {
 		outputAdminitrator.writeUTF(RequestAdministrator.ADMINISTRATOR.toString());
 	}
 
-	public static Concert creatConcert(String name) {
-		return new Concert(name);
+	public static Concert creatConcert(String name, int numberTickets, Calendar date) {
+		return new Concert(name, numberTickets, date);
 	}
 	
 	public ArrayList<Concert> getConcerts(){

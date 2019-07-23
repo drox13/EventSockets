@@ -3,10 +3,10 @@ package views;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import models.dao.Administrator;
 import models.entity.Concert;
 
 public class WindowsAdministrator extends JFrame{
@@ -16,17 +16,13 @@ public class WindowsAdministrator extends JFrame{
 
 	public WindowsAdministrator(ActionListener actionListener) {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		setExtendedState(MAXIMIZED_BOTH);
-		setSize(200, 200);
+		setSize(500, 500);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setIconImage(new ImageIcon(getClass().getResource("/img/icon.png")).getImage());
 		setJMenuBar(new MenuBar(actionListener));
 		panelTable = new PanelTable();
 		add(panelTable);
 		setVisible(true);
-	}
-
-	public Concert createConcert() {
-		String nameConcert = JOptionPane.showInputDialog(this, "nombre del nuevo concieto");
-		return Administrator.creatConcert(nameConcert);
 	}
 
 	public void filltable(ArrayList<Concert> concerts) {

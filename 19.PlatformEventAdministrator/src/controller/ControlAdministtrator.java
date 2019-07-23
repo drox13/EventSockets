@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import models.dao.Administrator;
+import views.DialogRegisterConcert;
 import views.WindowsAdministrator;
 
 public class ControlAdministtrator implements ActionListener{
 	private Administrator administrator;
 	private WindowsAdministrator windowsAdministrator;
+	private DialogRegisterConcert dialogRegisterConcert;
 	
 	public ControlAdministtrator() {
 		try {
@@ -23,6 +25,7 @@ public class ControlAdministtrator implements ActionListener{
 			e.printStackTrace();
 		}
 		windowsAdministrator = new WindowsAdministrator(this);
+		dialogRegisterConcert = new DialogRegisterConcert(windowsAdministrator, this);
 	}
 
 	@Override
@@ -30,15 +33,16 @@ public class ControlAdministtrator implements ActionListener{
 		switch (Command.valueOf(e.getActionCommand())) {
 		case CREATE_CONCERT:
 			createConcert();
+			dialogRegisterConcert.setVisible(false);
 			break;
-
-		default:
+		case OPEN_DIALOG_CREATE_CONCERT:
+			dialogRegisterConcert.setVisible(true);
 			break;
 		}
 	}
 	
 	private void createConcert() {
-		administrator.sendConcert(windowsAdministrator.createConcert());
+		administrator.sendConcert(dialogRegisterConcert.getConcert());
 		refreshTable();
 	}
 	

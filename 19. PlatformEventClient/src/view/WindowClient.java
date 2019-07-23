@@ -3,6 +3,7 @@ package view;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,31 +19,42 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	
 	public WindowClient(ActionListener actionListener) {
 		this.actionListener = actionListener;
-		setSize(200, 200);
+		setSize(500, 500);
+//		setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.actionListener = actionListener;
+		setTitle("Cliente");
+		setIconImage(new ImageIcon(getClass().getResource("/img/icon.png")).getImage());
 		panelCard = new PanelCard();
 		add(panelCard);
 		dialogTickets = new DialogTickets(this);
 		setVisible(true);
 	}
 	
+	public static void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+	
+	public DialogTickets getDialogTickets() {
+		return dialogTickets;
+	}
+
 	@Override
 	public void notify(String message) {
 		JOptionPane.showMessageDialog(this, message, "nuevo concierto", JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	
 	@Override
 	public void refreshConsert(ArrayList<Concert> concerts) {
 		panelCard.refreshPanelCard(concerts, actionListener);
 	}
 	
-	public static void showMessage(String message) {
-		JOptionPane.showMessageDialog(null, message);
-	}
-	
+	@Override
 	public void fillDialog(boolean[] booleans) {
 		dialogTickets.fillDialog(booleans, actionListener);
 		dialogTickets.setVisible(true);
+	}
+	
+	public void closeDialog() {
+		dialogTickets.close();
 	}
 }

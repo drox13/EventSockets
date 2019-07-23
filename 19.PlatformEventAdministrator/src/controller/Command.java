@@ -1,5 +1,5 @@
 package controller;
 
 public enum Command {
-	CREATE_CONCERT
+	OPEN_DIALOG_CREATE_CONCERT, CREATE_CONCERT
 }

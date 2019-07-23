@@ -49,7 +49,7 @@ public class Client {
 	private void aswer() {
 		try {
 			String aswer = inputClient.readUTF();
-			System.out.println("respuesta resivida en cliente: " + aswer);
+			System.out.println("respuesta recibida en cliente: " + aswer);
 			switch (AnswerClient.valueOf(aswer)) {
 			case NOTIFY_CONCERT_CLIENT:
 				managerObserverWindow.notifyNewConcert(inputClient.readUTF());
@@ -58,6 +58,9 @@ public class Client {
 				break;
 			case SEND_VECTOR_TICKETS:
 				boolean booleans [] = JsonUtil.convertStringJsontoVector(inputClient.readUTF());
+				int idConsert = Integer.parseInt(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
+				Concert concert = searchConcert(idConsert);
+				concert.setTickets(booleans);
 				managerObserverWindow.fillDialog(booleans);
 				break;
 			}
@@ -78,7 +81,7 @@ public class Client {
 	//sdas
 	
 	//sdas
-	public boolean[] searchConcert(int idConcert, int positionByVector)throws NullPointerException {
+	public boolean[] buyTicketsbyConcert(int idConcert, int positionByVector)throws NullPointerException {
 		for (Concert concert : concertList) {
 			if(concert.getId() == idConcert) {
 				concert.buyTicket(positionByVector);
@@ -87,6 +90,15 @@ public class Client {
 			}
 		}
 		throw new NullPointerException("No se encontro el concierto");
+	}
+	
+	public Concert searchConcert(int idConcert) throws NullPointerException{
+		for (Concert concert : concertList) {
+			if(concert.getId() == idConcert) {
+				return concert;
+			}
+		}
+		throw new NullPointerException("no se encontro");
 	}
 	
 	public ArrayList<Concert> getConcertList() {
@@ -100,5 +112,4 @@ public class Client {
 	public DataInputStream getInputClient() {
 		return inputClient;
 	}
-
 }
