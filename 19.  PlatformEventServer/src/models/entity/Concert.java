@@ -32,12 +32,16 @@ public class Concert {
 		return tickets;
 	}
 	
+	public String getDateFormat() {
+		return CalendarUtil.toStringCalendar(date);
+	}
+	
 	public void setTickets(boolean[] tickets) {
 		this.tickets = tickets;
 	}
 	
 	@Override
 	public String toString() {
-		return "concierto: " + id +" "+ name + " " +" "+ numberTickets +"" + CalendarUtil.toStringCalendar(date);
+		return "concierto: " + id +" "+ name + " " +" "+ numberTickets +" " + getDateFormat();
 	}
 }

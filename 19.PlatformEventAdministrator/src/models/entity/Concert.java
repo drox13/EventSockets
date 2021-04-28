@@ -36,4 +36,8 @@ public class Concert {
 	public Object[] toVectorTable() {
 		return new Object[] {id, name, numberTickets, CalendarUtil.toStringCalendar(date)};
 	}
+
+	public String getDateFormat() {
+		return CalendarUtil.toStringCalendar(date);
+	}
 }

@@ -6,23 +6,28 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import models.dao.EventManager;
 import models.dao.IObserver;
 import models.entity.Concert;
+import queue_Stack_SimpleList.MyQueue;
+import util.CalendarUtil;
 import util.Json;
 
 public class Server implements Runnable, IObserver{
 	
-	private static final int PORT = 3292;
+	private static final int PORT = 20987;
 	private ServerSocket serverSocket;
 	private boolean serverOn;
 	private Thread threadNewConnections;
 	private Connection connectionsAmd;
 	private ArrayList<Connection> connections;
-	private ArrayList<Concert> concertList;
+	private MyQueue<Concert> concertList;
+//	private ArrayList<Concert> concertList;
 	private EventManager eventManager;
 	
 	public Server() throws IOException {
@@ -30,12 +35,33 @@ public class Server implements Runnable, IObserver{
 		serverOn = true;
 		threadNewConnections = new Thread(this);
 		connections = new ArrayList<>();
-		concertList = new ArrayList<>();
+		
+		Comparator<Concert> comparator = new Comparator<Concert>() {
+
+			@Override
+			public int compare(Concert o1, Concert o2) {
+				return o1.getDateFormat().compareTo(o2.getDateFormat());
+			}
+		};
+		
+		concertList = new MyQueue<>(comparator);
+//		concertList = new ArrayList<>();
 		threadNewConnections.start();
 		eventManager = new EventManager(this);
-		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto 3010");
+		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto " + PORT);
+		test();
 	}
 	
+	private void test() {
+		Calendar cal1 = Calendar.getInstance();
+		cal1.set(2021, 03, 30);
+		Calendar cal2 = Calendar.getInstance();
+		cal2.set(2021, 03, 28);
+		concertList.putToQueue(new Concert("segundo", 2, cal1));
+		concertList.putToQueue(new Concert("primero", 2, cal2));
+		System.out.println(concertList.showQueue());
+	}
+
 	@Override
 	public void run() {
 		while (serverOn) {
@@ -70,12 +96,15 @@ public class Server implements Runnable, IObserver{
 	
 	@Override
 	public void addConcert(Concert concert) {
-		concertList.add(concert);
+		concertList.putToQueue(concert);
+//		concertList.add(concert);
 	}
 
 	@Override
 	public ArrayList<Concert> getConcerList() {
-		return new ArrayList<>(concertList);
+//		return new ArrayList<>(concertList);
+//		return concertList;
+		return null;
 	}
 	
 	public Connection getConnectionsAmd() {

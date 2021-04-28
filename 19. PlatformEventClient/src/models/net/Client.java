@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import models.entity.Concert;
 import observer.ManagerObserverWindow;
 import util.JsonUtil;
 
 public class Client {
-	private static final int PORT = 3292;
+	private static final int PORT = 20987;
 	private static final String HOST = "127.0.0.1";
 	private Socket socket;
 	private DataInputStream inputClient;
@@ -54,6 +55,12 @@ public class Client {
 			case NOTIFY_CONCERT_CLIENT:
 				managerObserverWindow.notifyNewConcert(inputClient.readUTF());
 				concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
+				concertList.sort(new Comparator<Concert>() {
+				    @Override
+				    public int compare(Concert o1, Concert o2) {
+				        return o1.getDateFormat().compareTo(o2.getDateFormat());
+				    }
+				});
 				managerObserverWindow.refreshConcertList(concertList);
 				break;
 			case SEND_VECTOR_TICKETS:

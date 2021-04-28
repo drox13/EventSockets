@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 import models.entity.Concert;
 import util.Json;
@@ -14,7 +15,7 @@ import util.Json;
 public class Administrator {
 	
 	private static final String REGISTER_CONCERT = "concierto registrado";
-	private static final int PORT = 3292;
+	private static final int PORT = 20987;
 	private static final String HOST = "127.0.0.1";
 	private ArrayList<Concert> concertList;
 	private Socket socket;
@@ -47,6 +48,12 @@ public class Administrator {
 			switch (AswerAdm.valueOf(aswerAdm)) {
 			case OK:
 				concertList.add(concert);
+				concertList.sort(new Comparator<Concert>() {
+				    @Override
+				    public int compare(Concert o1, Concert o2) {
+				        return o1.getDateFormat().compareTo(o2.getDateFormat());
+				    }
+				});
 				messageStatus = REGISTER_CONCERT;
 				break;
 			}

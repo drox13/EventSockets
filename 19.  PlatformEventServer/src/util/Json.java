@@ -2,6 +2,7 @@ package util;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -11,6 +12,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import models.entity.Concert;
+import queue_Stack_SimpleList.MyQueue;
 
 public class Json {
 	private static final Gson gson = new Gson();
@@ -25,21 +27,32 @@ public class Json {
 		return gson.toJson(concert);
 	}
 	
-	public static String convertArrayListToStringJson(ArrayList<Concert> concerts) {
+	public static String convertArrayListToStringJson(MyQueue<Concert> concertList) {
 		JsonArray array = new JsonArray();
-		for (int i = 0; i < concerts.size(); i++) {
-			JsonObject obj = new JsonObject();
-			obj.addProperty("concert", gson.toJson(concerts.get(i)));
-			array.add(obj);
-		}
-		
+		Iterator<Concert> iterator = concertList.iterator();
 		String concertsJson = "[";
-		for (Concert concert : concerts) {
-			concertsJson+= gson.toJson(concert)+",";
+		while(iterator.hasNext()){
+			concertsJson += gson.toJson(iterator.next())+",";
 		}
 		String newS= concertsJson.substring(0, concertsJson.length()-1);
 		newS+="]";
-		return newS	;
+		
+		
+		
+//		for (int i = 0; i < concertList.size(); i++) {
+//			JsonObject obj = new JsonObject();
+//			obj.addProperty("concert", gson.toJson(concertList.get(i)));
+//			array.add(obj);
+//		}
+		
+//		String concertsJson = "[";
+//		for (Concert concert : concertList) {
+//			concertsJson+= gson.toJson(concert)+",";
+//		}
+//		String newS= concertsJson.substring(0, concertsJson.length()-1);
+//		newS+="]";
+		System.out.println(newS);
+		return newS;
 	}
 	
 	public static String convertStringJsonToString(String stringJSON) {
