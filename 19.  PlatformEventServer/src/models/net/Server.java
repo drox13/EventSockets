@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +16,6 @@ import models.dao.EventManager;
 import models.dao.IObserver;
 import models.entity.Concert;
 import queue_Stack_SimpleList.MyQueue;
-import util.CalendarUtil;
 import util.Json;
 
 public class Server implements Runnable, IObserver{
@@ -101,10 +101,10 @@ public class Server implements Runnable, IObserver{
 	}
 
 	@Override
-	public ArrayList<Concert> getConcerList() {
+	public Iterator<Concert> getConcerList() {
 //		return new ArrayList<>(concertList);
 //		return concertList;
-		return null;
+		return concertList.iterator();
 	}
 	
 	public Connection getConnectionsAmd() {

@@ -55,12 +55,7 @@ public class Client {
 			case NOTIFY_CONCERT_CLIENT:
 				managerObserverWindow.notifyNewConcert(inputClient.readUTF());
 				concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
-				concertList.sort(new Comparator<Concert>() {
-				    @Override
-				    public int compare(Concert o1, Concert o2) {
-				        return o1.getDateFormat().compareTo(o2.getDateFormat());
-				    }
-				});
+				concertList.sort((o1, o2) -> o1.getDateFormat().compareTo(o2.getDateFormat()));
 				managerObserverWindow.refreshConcertList(concertList);
 				break;
 			case SEND_VECTOR_TICKETS:

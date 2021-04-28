@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -77,23 +77,40 @@ public class Connection implements Runnable{
 		}
 	}
 
-	public Concert searhConcert(int id) {
-		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
-		for (Concert concert : copyConcertServer) {
+	private Concert searhConcert(int id) {
+		Iterator<Concert> iterator = eventManager.getConcerList();
+		while(iterator.hasNext()) {
+			Concert concert = iterator.next();
 			if(concert.getId() == id) {
 				return concert;
 			}
 		}
+		
+//		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
+//		for (Concert concert : copyConcertServer) {
+//			if(concert.getId() == id) {
+//				return concert;
+//			}
+//		}
 		throw new NullPointerException("no se encontro");
 	}
 
-	public boolean[] searhTicketsByConcert(int id) {
-		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
-		for (Concert concert : copyConcertServer) {
+	private boolean[] searhTicketsByConcert(int id) {
+		Iterator<Concert> iterator = eventManager.getConcerList();
+		while(iterator.hasNext()) {
+			Concert concert = iterator.next();
 			if(concert.getId() == id) {
 				return concert.getTickets();
 			}
 		}
+		
+		
+//		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
+//		for (Concert concert : copyConcertServer) {
+//			if(concert.getId() == id) {
+//				return concert.getTickets();
+//			}
+//		}
 		throw new NullPointerException("no se encontro");
 	}
 

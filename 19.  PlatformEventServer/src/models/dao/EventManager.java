@@ -1,6 +1,7 @@
 package models.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import models.entity.Concert;
 
@@ -19,7 +20,7 @@ public class EventManager {
 		serverObserver.addConcert(concert);
 	}
 	
-	public ArrayList<Concert> getConcerList() {
+	public Iterator<Concert> getConcerList() {
 		return serverObserver.getConcerList();
 	}
 }

@@ -48,12 +48,7 @@ public class Administrator {
 			switch (AswerAdm.valueOf(aswerAdm)) {
 			case OK:
 				concertList.add(concert);
-				concertList.sort(new Comparator<Concert>() {
-				    @Override
-				    public int compare(Concert o1, Concert o2) {
-				        return o1.getDateFormat().compareTo(o2.getDateFormat());
-				    }
-				});
+				concertList.sort((o1, o2) -> o1.getDateFormat().compareTo(o2.getDateFormat()));
 				messageStatus = REGISTER_CONCERT;
 				break;
 			}

@@ -1,7 +1,6 @@
 package util;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
@@ -28,7 +27,7 @@ public class Json {
 	}
 	
 	public static String convertArrayListToStringJson(MyQueue<Concert> concertList) {
-		JsonArray array = new JsonArray();
+//		JsonArray array = new JsonArray();
 		Iterator<Concert> iterator = concertList.iterator();
 		String concertsJson = "[";
 		while(iterator.hasNext()){
