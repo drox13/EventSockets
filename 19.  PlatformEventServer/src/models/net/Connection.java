@@ -44,52 +44,16 @@ public class Connection implements Runnable{
 				if (inputConnection.available() > 0) {
 					String request = inputConnection.readUTF();
 					if(request!=null) {
-						System.out.println("request server: " +request);
+						Logger.getGlobal().log(Level.INFO, "request server: " + request);
 						switch (Requests.valueOf(request)) {
 						case SENT_CONCERT:
-							Concert newConcert = Json.stringtoJson(inputConnection.readUTF());
-							eventManager.addConcert(newConcert);
-							if(!user) {
-								outputConnection.writeUTF(Answer.OK.toString());
-							}
-							eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
+							sentConcert();
 							break;
 						case VIEW_TICKETS:
-							int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
-							outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
-							outputConnection.writeUTF(Json.convertVectorToStringJson(searhTicketsByConcert(idConcert)));
-							if(user) {
-								outputConnection.writeUTF(Json.convertStringToStrigJson(String.valueOf(idConcert)));
-							}
+							viewTickets();
 							break;
 						case CONFIRM_PURCHASE:
-							int idConcertN = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
-							ArrayList<String> ticketsSelects = Json.convertStringtoArray(inputConnection.readUTF());
-							boolean [] tickest = searhConcert(idConcertN).getTickets();
-							boolean todoslibres = false;
-							for (String string: ticketsSelects) {
-								if(tickest[Integer.parseInt(string)] == false) {
-									todoslibres = true;
-								}else{
-									todoslibres = false;
-									break;
-								}
-							}
-
-							if(todoslibres) {
-								for (String string: ticketsSelects) {
-									tickest[Integer.parseInt(string)] =  true;
-								}
-								outputConnection.writeUTF(Answer.SUCCESSFUL.toString());
-								outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Exitosa"));
-							}else {
-								outputConnection.writeUTF(Answer.FAIL.toString());
-								outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Fallida"));
-							}
-//							System.out.println(ticketsSelects.toString() +"vector desde el user");
-//							for (int i = 0; i < tickest.length; i++) {
-//								System.out.println(tickest[i]);
-//							}
+							confirmPurchase();
 							break;
 						}
 					}
@@ -100,6 +64,54 @@ public class Connection implements Runnable{
 		}
 	}
 
+	private void confirmPurchase() throws IOException {
+		int idConcertN = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
+		ArrayList<String> ticketsSelects = Json.convertStringtoArray(inputConnection.readUTF());
+		boolean [] tickest = searhConcert(idConcertN).getTickets();
+		boolean todoslibres = checkAllFree(ticketsSelects, tickest);
+		if(todoslibres) {
+			for (String string: ticketsSelects) {
+				tickest[Integer.parseInt(string)] =  true;
+			}
+			outputConnection.writeUTF(Answer.SUCCESSFUL.toString());
+			outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Exitosa"));
+		}else {
+			outputConnection.writeUTF(Answer.FAIL.toString());
+			outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Fallida"));
+		}
+	}
+
+	private boolean checkAllFree(ArrayList<String> ticketsSelects, boolean[] tickest) {
+		boolean todoslibres = false;
+		for (String string: ticketsSelects) {
+			if(tickest[Integer.parseInt(string)] == false) {
+				todoslibres = true;
+			}else{
+				todoslibres = false;
+				break;
+			}
+		}
+		return todoslibres;
+	}
+
+	private void viewTickets() throws IOException {
+		int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
+		outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
+		outputConnection.writeUTF(Json.convertVectorToStringJson(searhTicketsByConcert(idConcert)));
+		if(user) {
+			outputConnection.writeUTF(Json.convertStringToStrigJson(String.valueOf(idConcert)));
+		}
+	}
+
+	private void sentConcert() throws IOException {
+		Concert newConcert = Json.stringtoJson(inputConnection.readUTF());
+		eventManager.addConcert(newConcert);
+		if(!user) {
+			outputConnection.writeUTF(Answer.OK.toString());
+		}
+		eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
+	}
+
 	private Concert searhConcert(int id) {
 		Iterator<Concert> iterator = eventManager.getConcerList();
 		while(iterator.hasNext()) {
@@ -108,13 +120,6 @@ public class Connection implements Runnable{
 				return concert;
 			}
 		}
-		
-//		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
-//		for (Concert concert : copyConcertServer) {
-//			if(concert.getId() == id) {
-//				return concert;
-//			}
-//		}
 		throw new NullPointerException("no se encontro");
 	}
 
@@ -126,14 +131,6 @@ public class Connection implements Runnable{
 				return concert.getTickets();
 			}
 		}
-		
-		
-//		ArrayList<Concert> copyConcertServer = eventManager.getConcerList();
-//		for (Concert concert : copyConcertServer) {
-//			if(concert.getId() == id) {
-//				return concert.getTickets();
-//			}
-//		}
 		throw new NullPointerException("no se encontro");
 	}
 
@@ -143,7 +140,6 @@ public class Connection implements Runnable{
 			outputConnection.writeUTF(message);
 			outputConnection.writeUTF(concertToJson);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

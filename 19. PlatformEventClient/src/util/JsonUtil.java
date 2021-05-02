@@ -55,18 +55,6 @@ public class JsonUtil {
 		return vectorTickestConcert;
 	}
 
-	private static String convertVectorToStringJson (boolean[] tickest) {
-		JsonObject objBig  = new JsonObject();
-		JsonArray arrayJson = new JsonArray();
-		for (int i = 0; i < tickest.length; i++) {
-			JsonObject objJson = new JsonObject();
-			objJson.addProperty("ticket", tickest[i]);
-			arrayJson.add(objJson);
-		}
-		objBig.add("tickets", arrayJson);
-		return objBig.toString();
-	}
-	
 	public static String convertStringJsonToString(String stringJSON) {
 		String string = gson.fromJson(stringJSON, String.class);
 		return string;
@@ -78,7 +66,6 @@ public class JsonUtil {
 			JsonPrimitive data = new JsonPrimitive(string);
 			array.add(data);
 		}
-		System.out.println("asi se envio el array: " + array.toString());
 		return array.toString();
 	}
 }

@@ -27,7 +27,6 @@ public class Server implements Runnable, IObserver{
 	private Connection connectionsAmd;
 	private ArrayList<Connection> connections;
 	private MyQueue<Concert> concertList;
-//	private ArrayList<Concert> concertList;
 	private EventManager eventManager;
 	
 	public Server() throws IOException {
@@ -45,7 +44,6 @@ public class Server implements Runnable, IObserver{
 		};
 		
 		concertList = new MyQueue<>(comparator);
-//		concertList = new ArrayList<>();
 		threadNewConnections.start();
 		eventManager = new EventManager(this);
 		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto " + PORT);
@@ -74,7 +72,6 @@ public class Server implements Runnable, IObserver{
 					connectionsAmd = new Connection(socket, eventManager, false);
 					break;
 				case CLIENT:
-					System.out.println("entro un cliente");
 					DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 					Connection newConnection = new Connection(socket, eventManager, true);
 					dataOutputStream.writeUTF(Json.convertArrayListToStringJson(concertList));
@@ -97,13 +94,10 @@ public class Server implements Runnable, IObserver{
 	@Override
 	public void addConcert(Concert concert) {
 		concertList.putToQueue(concert);
-//		concertList.add(concert);
 	}
 
 	@Override
 	public Iterator<Concert> getConcerList() {
-//		return new ArrayList<>(concertList);
-//		return concertList;
 		return concertList.iterator();
 	}
 	

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import models.entity.Concert;
 import observer.ManagerObserverWindow;
@@ -54,17 +53,10 @@ public class Client {
 			System.out.println("respuesta recibida en cliente: " + aswer);
 			switch (AnswerClient.valueOf(aswer)) {
 			case NOTIFY_CONCERT_CLIENT:
-				managerObserverWindow.notifyNewConcert(inputClient.readUTF());
-				concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
-				concertList.sort((o1, o2) -> o1.getDateFormat().compareTo(o2.getDateFormat()));
-				managerObserverWindow.refreshConcertList(concertList);
+				receiveNotiftyNewConcert();
 				break;
 			case SEND_VECTOR_TICKETS:
-				boolean booleans [] = JsonUtil.convertStringJsontoVector(inputClient.readUTF());
-				int idConsert = Integer.parseInt(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
-				Concert concert = searchConcert(idConsert);
-				concert.setTickets(booleans);
-				managerObserverWindow.fillDialog(booleans);
+				showTickets();
 				break;
 			case FAIL:
 				WindowClient.showMessage(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
@@ -75,9 +67,23 @@ public class Client {
 				break;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void showTickets() throws IOException {
+		boolean booleans [] = JsonUtil.convertStringJsontoVector(inputClient.readUTF());
+		int idConsert = Integer.parseInt(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
+		Concert concert = searchConcert(idConsert);
+		concert.setTickets(booleans);
+		managerObserverWindow.fillDialog(booleans);
+	}
+
+	private void receiveNotiftyNewConcert() throws IOException {
+		managerObserverWindow.notifyNewConcert(inputClient.readUTF());
+		concertList.add(JsonUtil.convertStringToConcert(inputClient.readUTF()));
+		concertList.sort((o1, o2) -> o1.getDateFormat().compareTo(o2.getDateFormat()));
+		managerObserverWindow.refreshConcertList(concertList);
 	}
 	
 	public boolean[] buyTicketsbyConcert(int idConcert, int positionByVector)throws NullPointerException {

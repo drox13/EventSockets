@@ -3,7 +3,6 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-//import java.util.ArrayList;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -30,7 +29,6 @@ public class ControlClient implements ActionListener{
 		try {
 			client = new Client(managerObserverWindow);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ticketsSelect = new ArrayList<>();
@@ -66,10 +64,8 @@ public class ControlClient implements ActionListener{
 				client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(idConcert));
 				client.getOutputClient().writeUTF(JsonUtil.convertArraytoStringJson(ticketsSelect));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 	}
 
 	private boolean[] sendIdConcertAndTicket(String idConcert, String idTicket) throws NullPointerException{
@@ -85,7 +81,6 @@ public class ControlClient implements ActionListener{
 			client.getOutputClient().writeUTF(Command.VIEW_TICKETS.toString());
 			client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(id));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

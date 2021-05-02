@@ -1,6 +1,5 @@
 package models.dao;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import models.entity.Concert;
