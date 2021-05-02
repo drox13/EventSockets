@@ -1,6 +1,8 @@
 package util;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
@@ -69,7 +71,7 @@ public class Json {
 		return arrayJson.toString();
 	}
 	
-	public static boolean[] convertStringJsontoVector(String stringJson) {
+	private static boolean[] convertStringJsontoVector(String stringJson) {
 		JsonParser parser = new JsonParser();
 		JsonObject objBig = parser.parse(stringJson).getAsJsonObject();
 		JsonArray vectorTickets = objBig.get("tickets").getAsJsonArray();
@@ -87,5 +89,18 @@ public class Json {
 	public static String convertStringToStrigJson(String convert) {
 		JsonPrimitive primitive = new JsonPrimitive(convert);
 		return primitive.toString();
+	}
+
+	public static ArrayList<String> convertStringtoArray(String convert){
+		System.out.println("se resivio");
+		ArrayList<String> aux = new ArrayList<>();
+		JsonParser parser = new JsonParser();
+		JsonArray array = parser.parse(convert).getAsJsonArray();
+		for (JsonElement jsonElement : array) {
+			String primitive = jsonElement.getAsJsonPrimitive().getAsString();
+			aux.add(primitive);
+		}
+		System.out.println("salio asi:" + aux.toString());
+		return aux;
 	}
 }

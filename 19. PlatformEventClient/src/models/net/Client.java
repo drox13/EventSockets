@@ -11,6 +11,7 @@ import java.util.Comparator;
 import models.entity.Concert;
 import observer.ManagerObserverWindow;
 import util.JsonUtil;
+import view.WindowClient;
 
 public class Client {
 	private static final int PORT = 20987;
@@ -65,6 +66,13 @@ public class Client {
 				concert.setTickets(booleans);
 				managerObserverWindow.fillDialog(booleans);
 				break;
+			case FAIL:
+				WindowClient.showMessage(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
+				break;
+			case SUCCESSFUL:
+				WindowClient.showMessage(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
+//				managerObserverWindow.qr("un mensaje no importa");
+				break;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -72,17 +80,6 @@ public class Client {
 		}
 	}
 	
-	//sdas
-	
-	//sdas
-	
-	//sdas
-	
-	//sdas
-	
-	//sdas
-	
-	//sdas
 	public boolean[] buyTicketsbyConcert(int idConcert, int positionByVector)throws NullPointerException {
 		for (Concert concert : concertList) {
 			if(concert.getId() == idConcert) {

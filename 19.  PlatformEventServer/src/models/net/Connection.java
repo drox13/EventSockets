@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +53,6 @@ public class Connection implements Runnable{
 								outputConnection.writeUTF(Answer.OK.toString());
 							}
 							eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
-							System.out.println("line 53");
 							break;
 						case VIEW_TICKETS:
 							int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
@@ -64,10 +64,32 @@ public class Connection implements Runnable{
 							break;
 						case CONFIRM_PURCHASE:
 							int idConcertN = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
-							boolean [] vectorClient = Json.convertStringJsontoVector(inputConnection.readUTF());
-							Concert concert = searhConcert(idConcertN);
-//							boolean[] ticketsServer = concert.getTickets();
-							concert.setTickets(vectorClient);
+							ArrayList<String> ticketsSelects = Json.convertStringtoArray(inputConnection.readUTF());
+							boolean [] tickest = searhConcert(idConcertN).getTickets();
+							boolean todoslibres = false;
+							for (String string: ticketsSelects) {
+								if(tickest[Integer.parseInt(string)] == false) {
+									todoslibres = true;
+								}else{
+									todoslibres = false;
+									break;
+								}
+							}
+
+							if(todoslibres) {
+								for (String string: ticketsSelects) {
+									tickest[Integer.parseInt(string)] =  true;
+								}
+								outputConnection.writeUTF(Answer.SUCCESSFUL.toString());
+								outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Exitosa"));
+							}else {
+								outputConnection.writeUTF(Answer.FAIL.toString());
+								outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Fallida"));
+							}
+//							System.out.println(ticketsSelects.toString() +"vector desde el user");
+//							for (int i = 0; i < tickest.length; i++) {
+//								System.out.println(tickest[i]);
+//							}
 							break;
 						}
 					}

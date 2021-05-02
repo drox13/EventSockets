@@ -1,11 +1,13 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import models.entity.Concert;
 import observer.IobserverWindow;
@@ -16,6 +18,7 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	private PanelCard panelCard;
 	private ActionListener actionListener;
 	private DialogTickets dialogTickets;
+	private PanelQr panelQr;
 	
 	public WindowClient(ActionListener actionListener) {
 		this.actionListener = actionListener;
@@ -25,8 +28,10 @@ public class WindowClient extends JFrame implements IobserverWindow{
 		setTitle("Cliente");
 		setIconImage(new ImageIcon(getClass().getResource("/img/icon.png")).getImage());
 		panelCard = new PanelCard();
-		add(panelCard);
+		add(panelCard, BorderLayout.CENTER);
 		dialogTickets = new DialogTickets(this);
+		panelQr = new PanelQr();
+		add(new JScrollPane(panelQr), BorderLayout.LINE_START);
 		setVisible(true);
 	}
 	
@@ -55,6 +60,6 @@ public class WindowClient extends JFrame implements IobserverWindow{
 	}
 	
 	public void closeDialog() {
-		dialogTickets.close();
+		dialogTickets.setVisible(false);
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 //import java.util.ArrayList;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 
@@ -21,7 +22,7 @@ public class ControlClient implements ActionListener{
 	private ManagerObserverWindow managerObserverWindow;
 	private String idConcert; 
 	private String idTicket;
-//	private ArrayList<String> ticketsSelect = new ArrayList<>();
+	private ArrayList<String> ticketsSelect = new ArrayList<>();
 
 	public ControlClient() {
 		windowClient = new WindowClient(this);
@@ -32,6 +33,7 @@ public class ControlClient implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ticketsSelect = new ArrayList<>();
 	}
 
 	@Override
@@ -43,23 +45,26 @@ public class ControlClient implements ActionListener{
 			break;
 		case SEND_ID_CONCERT_AND_TICKET:
 			idTicket = ((JButton)e.getSource()).getName();
+			ticketsSelect.add(idTicket);
 			sendIdConcertAndTicket(idConcert, idTicket);
 			break;
 		case CONFIRM_PURCHASE:
-				confirmPurchase();
-				windowClient.closeDialog();
+			confirmPurchase();
+			ticketsSelect.clear();
 			break;
 		case CANCEL_PURCHASE:
+			ticketsSelect.clear();
+			windowClient.closeDialog();
 			break;
 		}
 	}
 	
 	private void confirmPurchase() throws NullPointerException{
 			try {
+				windowClient.closeDialog();
 				client.getOutputClient().writeUTF(RequestClient.CONFIRM_PURCHASE.toString());
 				client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(idConcert));
-				client.getOutputClient().writeUTF(JsonUtil.convertVectorToStringJson(
-						sendIdConcertAndTicket(idConcert, idTicket)));
+				client.getOutputClient().writeUTF(JsonUtil.convertArraytoStringJson(ticketsSelect));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

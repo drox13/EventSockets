@@ -72,12 +72,8 @@ public class DialogTickets extends JDialog{
 		btnCancel.addActionListener(actionListener);
 		btnCancel.setActionCommand(Command.CANCEL_PURCHASE.toString());
 		btnCancel.setBackground(Color.decode("#E21515"));
-//		add(btnCancel);
+		add(btnCancel, BorderLayout.PAGE_START);
 		revalidate();
 		repaint();
-	}
-
-	public void close() {
-		setVisible(true);
 	}
 }
