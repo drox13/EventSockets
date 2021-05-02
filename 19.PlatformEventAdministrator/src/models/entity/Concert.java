@@ -11,6 +11,7 @@ public class Concert {
 	private boolean [] tickets;
 	private int numberTickets;
 	private Calendar date;
+	public static int number;
 	
 	public Concert(String name, int numberTickets, Calendar date) {
 		this.name = name;
@@ -18,6 +19,7 @@ public class Concert {
 		tickets = new boolean[numberTickets];
 		id = ++count;
 		this.date = date;
+		number = numberTickets;
 	}
 	
 	public String getName() {
@@ -39,5 +41,9 @@ public class Concert {
 
 	public String getDateFormat() {
 		return CalendarUtil.toStringCalendar(date);
+	}
+
+	public int getId() {
+		return id;
 	}
 }

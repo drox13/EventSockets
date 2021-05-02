@@ -5,7 +5,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import javax.swing.JButton;
+
 import models.dao.Administrator;
+import observer.ManagerObserver;
 import views.DialogRegisterConcert;
 import views.WindowsAdministrator;
 
@@ -13,10 +16,13 @@ public class ControlAdministtrator implements ActionListener{
 	private Administrator administrator;
 	private WindowsAdministrator windowsAdministrator;
 	private DialogRegisterConcert dialogRegisterConcert;
+	private ManagerObserver managerObserver;
 	
 	public ControlAdministtrator() {
+		windowsAdministrator = new WindowsAdministrator(this);
+		managerObserver = new ManagerObserver(windowsAdministrator);
 		try {
-			administrator = new Administrator();
+			administrator = new Administrator(managerObserver);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -24,7 +30,6 @@ public class ControlAdministtrator implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		windowsAdministrator = new WindowsAdministrator(this);
 		dialogRegisterConcert = new DialogRegisterConcert(windowsAdministrator, this);
 	}
 
@@ -38,6 +43,13 @@ public class ControlAdministtrator implements ActionListener{
 		case OPEN_DIALOG_CREATE_CONCERT:
 			dialogRegisterConcert.setVisible(true);
 			break;
+		case SHOW_CONCERT:
+				administrator.requestViewTickets(((JButton)e.getSource()).getName());
+//				administrator.getOutputAdminitrator().writeUTF(RequestAdministrator.VIEW_TICKETS.toString());
+//				administrator.getOutputAdminitrator().writeUTF(
+//						Json.convertStringToStringJson(((JButton)e.getSource()).getName()));
+			break;
+
 		}
 	}
 	

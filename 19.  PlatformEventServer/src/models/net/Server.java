@@ -49,7 +49,7 @@ public class Server implements Runnable, IObserver{
 		threadNewConnections.start();
 		eventManager = new EventManager(this);
 		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto " + PORT);
-		test();
+//		test();
 	}
 	
 	private void test() {

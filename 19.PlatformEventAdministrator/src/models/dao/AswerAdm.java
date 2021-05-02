@@ -1,5 +1,6 @@
 package models.dao;
 
 public enum AswerAdm {
-	OK
+//	OK,
+	SEND_VECTOR_TICKETS
 }

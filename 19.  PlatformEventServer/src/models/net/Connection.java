@@ -52,12 +52,13 @@ public class Connection implements Runnable{
 								outputConnection.writeUTF(Answer.OK.toString());
 							}
 							eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
+							System.out.println("line 53");
 							break;
 						case VIEW_TICKETS:
 							int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
+							outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
+							outputConnection.writeUTF(Json.convertVectorToStringJson(searhTicketsByConcert(idConcert)));
 							if(user) {
-								outputConnection.writeUTF(Answer.SEND_VECTOR_TICKETS.toString());
-								outputConnection.writeUTF(Json.convertVectorToStringJson(searhTicketsByConcert(idConcert)));
 								outputConnection.writeUTF(Json.convertStringToStrigJson(String.valueOf(idConcert)));
 							}
 							break;
