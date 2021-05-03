@@ -65,13 +65,13 @@ public class Connection implements Runnable{
 	}
 
 	private void confirmPurchase() throws IOException {
-		int idConcertN = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
+		int idConcert = Integer.parseInt(Json.convertStringJsonToString(inputConnection.readUTF()));
 		ArrayList<String> ticketsSelects = Json.convertStringtoArray(inputConnection.readUTF());
-		boolean [] tickest = searhConcert(idConcertN).getTickets();
-		boolean todoslibres = checkAllFree(ticketsSelects, tickest);
-		if(todoslibres) {
+		boolean [] ticket = searhConcert(idConcert).getTickets();
+		boolean allFree = checkAllFree(ticketsSelects, ticket);
+		if(allFree) {
 			for (String string: ticketsSelects) {
-				tickest[Integer.parseInt(string)] =  true;
+				ticket[Integer.parseInt(string)] =  true;
 			}
 			outputConnection.writeUTF(Answer.SUCCESSFUL.toString());
 			outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Exitosa"));
@@ -81,17 +81,17 @@ public class Connection implements Runnable{
 		}
 	}
 
-	private boolean checkAllFree(ArrayList<String> ticketsSelects, boolean[] tickest) {
-		boolean todoslibres = false;
+	private boolean checkAllFree(ArrayList<String> ticketsSelects, boolean[] ticket) {
+		boolean allFree = false;
 		for (String string: ticketsSelects) {
-			if(tickest[Integer.parseInt(string)] == false) {
-				todoslibres = true;
+			if(ticket[Integer.parseInt(string)] == false) {
+				allFree = true;
 			}else{
-				todoslibres = false;
+				allFree = false;
 				break;
 			}
 		}
-		return todoslibres;
+		return allFree;
 	}
 
 	private void viewTickets() throws IOException {

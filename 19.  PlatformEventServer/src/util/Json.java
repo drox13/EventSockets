@@ -2,7 +2,6 @@ package util;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
@@ -17,7 +16,6 @@ import queue_Stack_SimpleList.MyQueue;
 
 public class Json {
 	private static final Gson gson = new Gson();
-	private static final String TICKET = "ticket";
 	
 	public static Concert stringtoJson(String stringJson) {
 		Concert concert = gson.fromJson(stringJson, Concert.class);
@@ -29,7 +27,6 @@ public class Json {
 	}
 	
 	public static String convertArrayListToStringJson(MyQueue<Concert> concertList) {
-//		JsonArray array = new JsonArray();
 		Iterator<Concert> iterator = concertList.iterator();
 		String concertsJson = "[";
 		while(iterator.hasNext()){
@@ -37,22 +34,6 @@ public class Json {
 		}
 		String newS= concertsJson.substring(0, concertsJson.length()-1);
 		newS+="]";
-		
-		
-		
-//		for (int i = 0; i < concertList.size(); i++) {
-//			JsonObject obj = new JsonObject();
-//			obj.addProperty("concert", gson.toJson(concertList.get(i)));
-//			array.add(obj);
-//		}
-		
-//		String concertsJson = "[";
-//		for (Concert concert : concertList) {
-//			concertsJson+= gson.toJson(concert)+",";
-//		}
-//		String newS= concertsJson.substring(0, concertsJson.length()-1);
-//		newS+="]";
-		System.out.println(newS);
 		return newS;
 	}
 	
@@ -69,21 +50,6 @@ public class Json {
 			arrayJson.add(objJson);
 		}
 		return arrayJson.toString();
-	}
-	
-	private static boolean[] convertStringJsontoVector(String stringJson) {
-		JsonParser parser = new JsonParser();
-		JsonObject objBig = parser.parse(stringJson).getAsJsonObject();
-		JsonArray vectorTickets = objBig.get("tickets").getAsJsonArray();
-		boolean[] vectorTickestConcert = new boolean[vectorTickets.size()];
-		for(int i = 0; i < vectorTickets.size(); i++) {
-			JsonElement job = vectorTickets.get(i);
-			JsonObject obj = job.getAsJsonObject();
-			boolean statusTicket = obj.get(TICKET).getAsBoolean();
-			System.out.println("status Tickets: " + statusTicket);
-			vectorTickestConcert[i] = statusTicket;
-		}
-		return vectorTickestConcert;
 	}
 	
 	public static String convertStringToStrigJson(String convert) {

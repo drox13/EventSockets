@@ -34,7 +34,14 @@ public class Server implements Runnable, IObserver{
 		serverOn = true;
 		threadNewConnections = new Thread(this);
 		connections = new ArrayList<>();
-		
+		concertList = new MyQueue<>(generateComparator());
+		threadNewConnections.start();
+		eventManager = new EventManager(this);
+		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto " + PORT);
+//		test();
+	}
+
+	private Comparator<Concert> generateComparator() {
 		Comparator<Concert> comparator = new Comparator<Concert>() {
 
 			@Override
@@ -42,12 +49,7 @@ public class Server implements Runnable, IObserver{
 				return o1.getDateFormat().compareTo(o2.getDateFormat());
 			}
 		};
-		
-		concertList = new MyQueue<>(comparator);
-		threadNewConnections.start();
-		eventManager = new EventManager(this);
-		Logger.getGlobal().log(Level.INFO, "Servidor conect puerto " + PORT);
-//		test();
+		return comparator;
 	}
 	
 	private void test() {
@@ -72,16 +74,20 @@ public class Server implements Runnable, IObserver{
 					connectionsAmd = new Connection(socket, eventManager, false);
 					break;
 				case CLIENT:
-					DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-					Connection newConnection = new Connection(socket, eventManager, true);
-					dataOutputStream.writeUTF(Json.convertArrayListToStringJson(concertList));
-					connections.add(newConnection);	
+					newClient(socket);	
 					break;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void newClient(Socket socket) throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+		Connection newConnection = new Connection(socket, eventManager, true);
+		dataOutputStream.writeUTF(Json.convertArrayListToStringJson(concertList));
+		connections.add(newConnection);
 	}
 
 	@Override
