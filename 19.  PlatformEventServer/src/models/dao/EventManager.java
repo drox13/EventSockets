@@ -22,4 +22,8 @@ public class EventManager {
 	public Iterator<Concert> getConcerList() {
 		return serverObserver.getConcerList();
 	}
+
+	public void removeConections() {
+		serverObserver.removeConections();
+	}
 }

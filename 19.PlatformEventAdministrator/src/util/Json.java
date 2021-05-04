@@ -1,11 +1,16 @@
 package util;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import models.entity.Concert;
 
@@ -35,5 +40,14 @@ public class Json {
 			}
 		}
 		return vectorTickestConcert;
+	}
+	
+	public static List<Concert> convertArrayJsonToArratConcert(String arrayJson) {
+		ArrayList<Concert> concerts = new ArrayList<>();
+		try {
+			Type typeListConcert = new TypeToken<List<Concert>>(){}.getType();
+			concerts = gson.fromJson(arrayJson, typeListConcert);
+		} catch (Exception e) {}
+		return concerts;
 	}
 }

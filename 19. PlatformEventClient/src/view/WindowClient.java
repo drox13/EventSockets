@@ -14,6 +14,7 @@ import observer.IobserverWindow;
 
 public class WindowClient extends JFrame implements IobserverWindow{
 
+	private static final String NEW_CONCERT_TITLE = "nuevo concierto";
 	private static final long serialVersionUID = 1L;
 	private PanelCard panelCard;
 	private ActionListener actionListener;
@@ -45,7 +46,7 @@ public class WindowClient extends JFrame implements IobserverWindow{
 
 	@Override
 	public void notify(String message) {
-		JOptionPane.showMessageDialog(this, message, "nuevo concierto", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, message, NEW_CONCERT_TITLE, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	@Override

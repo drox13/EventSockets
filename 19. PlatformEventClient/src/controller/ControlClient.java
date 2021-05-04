@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 
 import models.net.Client;
-import models.net.RequestClient;
 import observer.ManagerObserverWindow;
-import util.JsonUtil;
 import view.Command;
 import view.WindowClient;
 
 public class ControlClient implements ActionListener{
-//	private static final String NO_TICKET_WAS_CHOSEN = "No se escogio ningun ticket";
+	private static final String SERVER_OFF = "Servidor fuera de linea";
+	private static final String NULL_MESSAGE = "null";
 	private Client client;
 	private WindowClient windowClient;
 	private ManagerObserverWindow managerObserverWindow;
@@ -29,7 +28,8 @@ public class ControlClient implements ActionListener{
 		try {
 			client = new Client(managerObserverWindow);
 		} catch (IOException e) {
-			e.printStackTrace();
+			WindowClient.showMessage(SERVER_OFF);
+			System.exit(0);
 		}
 		ticketsSelect = new ArrayList<>();
 	}
@@ -51,18 +51,20 @@ public class ControlClient implements ActionListener{
 			ticketsSelect.clear();
 			break;
 		case CANCEL_PURCHASE:
-			ticketsSelect.clear();
-			windowClient.closeDialog();
+			cancelPurchase();
 			break;
 		}
+	}
+
+	private void cancelPurchase() {
+		ticketsSelect.clear();
+		windowClient.closeDialog();
 	}
 	
 	private void confirmPurchase() throws NullPointerException{
 			try {
 				windowClient.closeDialog();
-				client.getOutputClient().writeUTF(RequestClient.CONFIRM_PURCHASE.toString());
-				client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(idConcert));
-				client.getOutputClient().writeUTF(JsonUtil.convertArraytoStringJson(ticketsSelect));
+				client.sendConfirmPurchase(idConcert, ticketsSelect );
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -72,14 +74,13 @@ public class ControlClient implements ActionListener{
 		if(!idConcert.equals("")&& !idTicket.equals("")) {
 			return client.buyTicketsbyConcert(Integer.parseInt(idConcert), Integer.parseInt(idTicket));
 		}else {
-			throw new NullPointerException("null");
+			throw new NullPointerException(NULL_MESSAGE);
 		}
 	}
 
 	private void viewConcert(String id) {
 		try {
-			client.getOutputClient().writeUTF(Command.VIEW_TICKETS.toString());
-			client.getOutputClient().writeUTF(JsonUtil.convertStringToStrigJson(id));
+			client.sendRequestViewConcert(Command.VIEW_TICKETS.toString(), id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -12,6 +12,9 @@ import observer.IObserver;
 
 public class WindowsAdministrator extends JFrame implements IObserver{
 
+	private static final String REGISTRO_OK_TITLE = "Registro ok";
+	private static final String URL_ICON = "/img/icon.png";
+	private static final String TITLE = "Administrador";
 	private static final long serialVersionUID = 1L;
 	private PanelTable panelTable;
 	private DialogTickets dialogTickets;
@@ -20,8 +23,9 @@ public class WindowsAdministrator extends JFrame implements IObserver{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(500, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setIconImage(new ImageIcon(getClass().getResource("/img/icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(URL_ICON)).getImage());
 		setJMenuBar(new MenuBar(actionListener));
+		setTitle(TITLE);
 		panelTable = new PanelTable(actionListener);
 		add(panelTable);
 		dialogTickets = new DialogTickets(this);
@@ -33,14 +37,18 @@ public class WindowsAdministrator extends JFrame implements IObserver{
 	}
 
 	public void messageOk(String message) {
-		JOptionPane.showMessageDialog(this, message, "Registro ok", 
+		JOptionPane.showMessageDialog(this, message, REGISTRO_OK_TITLE, 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	@Override
 	public void fillDialogTickets(boolean[] booleans) {
-		System.out.println("entro");
 		dialogTickets.fillDialog(booleans);
 		dialogTickets.setVisible(true);
+	}
+
+	@Override
+	public void updateTable(ArrayList<Concert> concertList) {
+		panelTable.fillTable(concertList);
 	}
 }

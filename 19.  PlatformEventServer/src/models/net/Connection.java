@@ -16,6 +16,12 @@ import models.entity.Concert;
 import util.Json;
 
 public class Connection implements Runnable{
+	private static final String NEW_CONNECTION_LOG = "Nuevo coneccion establecida: ";
+	private static final String REQUEST_LOG = "request server: ";
+	private static final String NEW_CONCERT_MSN = "Nuevo Concieto creado";
+	private static final String FAIL_MESSAGE = "transaccion Fallida";
+	private static final String SUCCESSFUL_MESSAGE = "transaccion Exitosa";
+	private static final String NO_FIND = "no se encontro";
 	private Socket socket;
 	private DataOutputStream outputConnection;
 	private DataInputStream inputConnection;
@@ -33,7 +39,7 @@ public class Connection implements Runnable{
 		connectionStatus = true;
 		theadRequests = new Thread(this);
 		theadRequests.start();
-		Logger.getGlobal().log(Level.INFO, "Nuevo coneccion establecida: " +
+		Logger.getGlobal().log(Level.INFO, NEW_CONNECTION_LOG +
 				socket.getInetAddress().getHostAddress());
 	}
 
@@ -44,10 +50,10 @@ public class Connection implements Runnable{
 				if (inputConnection.available() > 0) {
 					String request = inputConnection.readUTF();
 					if(request!=null) {
-						Logger.getGlobal().log(Level.INFO, "request server: " + request);
+						Logger.getGlobal().log(Level.INFO, REQUEST_LOG + request);
 						switch (Requests.valueOf(request)) {
 						case SENT_CONCERT:
-							sentConcert();
+							sendConcert();
 							break;
 						case VIEW_TICKETS:
 							viewTickets();
@@ -74,10 +80,10 @@ public class Connection implements Runnable{
 				ticket[Integer.parseInt(string)] =  true;
 			}
 			outputConnection.writeUTF(Answer.SUCCESSFUL.toString());
-			outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Exitosa"));
+			outputConnection.writeUTF(Json.convertStringToStrigJson(SUCCESSFUL_MESSAGE));
 		}else {
 			outputConnection.writeUTF(Answer.FAIL.toString());
-			outputConnection.writeUTF(Json.convertStringToStrigJson("transaccion Fallida"));
+			outputConnection.writeUTF(Json.convertStringToStrigJson(FAIL_MESSAGE));
 		}
 	}
 
@@ -103,13 +109,13 @@ public class Connection implements Runnable{
 		}
 	}
 
-	private void sentConcert() throws IOException {
+	private void sendConcert() throws IOException {
 		Concert newConcert = Json.stringtoJson(inputConnection.readUTF());
 		eventManager.addConcert(newConcert);
 		if(!user) {
 			outputConnection.writeUTF(Answer.OK.toString());
 		}
-		eventManager.notifyClients("Nuevo Concieto creado", Json.convertConcertToStringJson(newConcert));
+		eventManager.notifyClients(NEW_CONCERT_MSN, Json.convertConcertToStringJson(newConcert));
 	}
 
 	private Concert searhConcert(int id) {
@@ -120,7 +126,7 @@ public class Connection implements Runnable{
 				return concert;
 			}
 		}
-		throw new NullPointerException("no se encontro");
+		throw new NullPointerException(NO_FIND);
 	}
 
 	private boolean[] searhTicketsByConcert(int id) {
@@ -131,7 +137,7 @@ public class Connection implements Runnable{
 				return concert.getTickets();
 			}
 		}
-		throw new NullPointerException("no se encontro");
+		throw new NullPointerException(NO_FIND);
 	}
 
 	public void notifyConections(String message, String concertToJson) {
@@ -140,7 +146,7 @@ public class Connection implements Runnable{
 			outputConnection.writeUTF(message);
 			outputConnection.writeUTF(concertToJson);
 		} catch (IOException e) {
-			e.printStackTrace();
+			eventManager.removeConections();
 		}
 	}
 }

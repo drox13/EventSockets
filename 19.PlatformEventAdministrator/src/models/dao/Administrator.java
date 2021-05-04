@@ -30,7 +30,13 @@ public class Administrator{
 		outputAdminitrator = new DataOutputStream(socket.getOutputStream());
 		inputAdministrator = new DataInputStream(socket.getInputStream());
 		concertList = new ArrayList<>();
+		initRequest();
+	}
+
+	private void initRequest() throws IOException {
 		outputAdminitrator.writeUTF(RequestAdministrator.ADMINISTRATOR.toString());
+		concertList = new ArrayList<>(Json.convertArrayJsonToArratConcert(inputAdministrator.readUTF()));
+		managerObserver.updateTable(concertList);
 	}
 
 	public static Concert creatConcert(String name, int numberTickets, Calendar date) {
@@ -59,13 +65,12 @@ public class Administrator{
 		return messageStatus;
 	}
 
+	@SuppressWarnings("unused")
 	public void requestViewTickets(String idConcert) {
 		try {
 			outputAdminitrator.writeUTF(RequestAdministrator.VIEW_TICKETS.toString());
 			outputAdminitrator.writeUTF(Json.convertStringToStringJson(idConcert));
-			
 			String aswerAdm = inputAdministrator.readUTF();
-			System.out.println("respuesta resivida admi:" + aswerAdm);
 			boolean booleans [] = Json.convertStringJsontoVector(inputAdministrator.readUTF());
 			managerObserver.fillDialogTickets(booleans);
 		} catch (IOException e) {

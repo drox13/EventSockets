@@ -13,6 +13,8 @@ import util.JsonUtil;
 import view.WindowClient;
 
 public class Client {
+	private static final String NO_FIND = "no se encontro";
+	private static final String NO_FIND_CONCERT_MESSAGE = "No se encontro el concierto";
 	private static final int PORT = 20987;
 	private static final String HOST = "127.0.0.1";
 	private Socket socket;
@@ -63,7 +65,6 @@ public class Client {
 				break;
 			case SUCCESSFUL:
 				WindowClient.showMessage(JsonUtil.convertStringJsonToString(inputClient.readUTF()));
-//				managerObserverWindow.qr("un mensaje no importa");
 				break;
 			}
 		} catch (IOException e) {
@@ -94,7 +95,7 @@ public class Client {
 				return concert.getTickets();
 			}
 		}
-		throw new NullPointerException("No se encontro el concierto");
+		throw new NullPointerException(NO_FIND_CONCERT_MESSAGE);
 	}
 	
 	public Concert searchConcert(int idConcert) throws NullPointerException{
@@ -103,18 +104,21 @@ public class Client {
 				return concert;
 			}
 		}
-		throw new NullPointerException("no se encontro");
+		throw new NullPointerException(NO_FIND);
 	}
 	
 	public ArrayList<Concert> getConcertList() {
 		return new ArrayList<>(concertList);
 	}
-	
-	public DataOutputStream getOutputClient() {
-		return outputClient;
+
+	public void sendConfirmPurchase(String idConcert, ArrayList<String> ticketsSelect) throws IOException {
+		outputClient.writeUTF(RequestClient.CONFIRM_PURCHASE.toString());
+		outputClient.writeUTF(JsonUtil.convertStringToStrigJson(idConcert));
+		outputClient.writeUTF(JsonUtil.convertArraytoStringJson(ticketsSelect));
 	}
-	
-	public DataInputStream getInputClient() {
-		return inputClient;
+
+	public void sendRequestViewConcert(String command, String id) throws IOException {
+		outputClient.writeUTF(command);
+		outputClient.writeUTF(JsonUtil.convertStringToStrigJson(id));
 	}
 }
