@@ -6,7 +6,6 @@ import util.CalendarUtil;
 
 public class Concert {
 	private int id;
-	private static int count;
 	private String name;
 	private boolean [] tickets;
 	private int numberTickets;
@@ -17,7 +16,7 @@ public class Concert {
 		this.name = name;
 		this.numberTickets = numberTickets;
 		tickets = new boolean[numberTickets];
-		id = ++count;
+		id = (int) (Math.random()*Integer.MAX_VALUE + 1);
 		this.date = date;
 		number = numberTickets;
 	}

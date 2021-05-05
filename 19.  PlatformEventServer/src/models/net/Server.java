@@ -23,7 +23,6 @@ public class Server implements Runnable, IObserver{
 	private Thread threadNewConnections;
 	private ArrayList<Connection> connections;
 	private EventManager eventManager;
-	
 	private ManagerConcert managerConcert;
 	
 	public Server() throws IOException {
@@ -74,7 +73,7 @@ public class Server implements Runnable, IObserver{
 	@Override
 	public void notify(String message, String concertToJson) {
 		for(Connection connection : connections) {
-			connection.notifyConections(message, concertToJson);
+			connection.notifyConection(message, concertToJson);
 		}
 	}
 	

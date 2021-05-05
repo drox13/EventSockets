@@ -17,6 +17,7 @@ public class Administrator{
 	private static final String REGISTER_CONCERT = "concierto registrado";
 	private static final int PORT = 20987;
 	private static final String HOST = "127.0.0.1";
+	private static final String ERROR = "El concierto no se registro ERROR";
 	private ArrayList<Concert> concertList;
 	private Socket socket;
 	private DataOutputStream outputAdminitrator;
@@ -47,15 +48,18 @@ public class Administrator{
 		return new ArrayList<>(concertList);
 	}
 	
-	@SuppressWarnings("unused")
 	public void sendConcert(Concert concert) {
 		try {
 			outputAdminitrator.writeUTF(RequestAdministrator.SENT_CONCERT.toString());
 			outputAdminitrator.writeUTF(Json.convertObjectJson(concert));
 			String aswerAdm = inputAdministrator.readUTF();
+			if(AswerAdm.OK.toString().equals(aswerAdm)) {
 				concertList.add(concert);
 				concertList.sort((o1, o2) -> o1.getDateFormat().compareTo(o2.getDateFormat()));
 				messageStatus = REGISTER_CONCERT;
+			}else if(AswerAdm.ERROR.toString().equals(aswerAdm)) {
+				messageStatus = ERROR; 
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,14 +69,15 @@ public class Administrator{
 		return messageStatus;
 	}
 
-	@SuppressWarnings("unused")
 	public void requestViewTickets(String idConcert) {
 		try {
 			outputAdminitrator.writeUTF(RequestAdministrator.VIEW_TICKETS.toString());
 			outputAdminitrator.writeUTF(Json.convertStringToStringJson(idConcert));
 			String aswerAdm = inputAdministrator.readUTF();
-			boolean booleans [] = Json.convertStringJsontoVector(inputAdministrator.readUTF());
-			managerObserver.fillDialogTickets(booleans);
+			if(AswerAdm.SEND_VECTOR_TICKETS.toString().equals(aswerAdm)) {
+				boolean booleans [] = Json.convertStringJsontoVector(inputAdministrator.readUTF());
+				managerObserver.fillDialogTickets(booleans);	
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

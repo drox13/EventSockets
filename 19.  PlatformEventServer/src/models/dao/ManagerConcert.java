@@ -1,6 +1,5 @@
 package models.dao;
 
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -13,17 +12,6 @@ public class ManagerConcert {
 	
 	public ManagerConcert() {
 		concertList = new MyQueue<>(generateComparator());
-		test();
-	}
-	
-	private void test() {
-		Calendar cal1 = Calendar.getInstance();
-		cal1.set(2021, 03, 30);
-		Calendar cal2 = Calendar.getInstance();
-		cal2.set(2021, 03, 28);
-		concertList.putToQueue(new Concert("segundo", 2, cal1));
-		concertList.putToQueue(new Concert("primero", 2, cal2));
-		System.out.println(concertList.showQueue());
 	}
 	
 	private Comparator<Concert> generateComparator() {

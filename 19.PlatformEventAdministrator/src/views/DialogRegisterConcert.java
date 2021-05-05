@@ -67,4 +67,9 @@ public class DialogRegisterConcert extends JDialog{
 		return Administrator.creatConcert(jtxtConcert.getText(), 
 				Integer.parseInt(jtxtNumberTickets.getText()), calendar.getCalendar());
 	}
+
+	public void clearRegister() {
+		jtxtConcert.setText("");
+		jtxtNumberTickets.setText("");
+	}
 }

@@ -111,11 +111,17 @@ public class Connection implements Runnable{
 
 	private void sendConcert() throws IOException {
 		Concert newConcert = Json.stringtoJson(inputConnection.readUTF());
-		eventManager.addConcert(newConcert);
-		if(!user) {
-			outputConnection.writeUTF(Answer.OK.toString());
+		try {
+			eventManager.addConcert(newConcert);
+			if(!user) {
+				outputConnection.writeUTF(Answer.OK.toString());
+			}
+			eventManager.notifyClients(NEW_CONCERT_MSN, Json.convertConcertToStringJson(newConcert));
+		} catch (Exception e) {
+			if(!user) {
+				outputConnection.writeUTF(Answer.ERROR.toString());
+			}
 		}
-		eventManager.notifyClients(NEW_CONCERT_MSN, Json.convertConcertToStringJson(newConcert));
 	}
 
 	private Concert searhConcert(int id) {
@@ -140,7 +146,7 @@ public class Connection implements Runnable{
 		throw new NullPointerException(NO_FIND);
 	}
 
-	public void notifyConections(String message, String concertToJson) {
+	public void notifyConection(String message, String concertToJson) {
 		try {
 			outputConnection.writeUTF(Answer.NOTIFY_CONCERT_CLIENT.toString());
 			outputConnection.writeUTF(message);

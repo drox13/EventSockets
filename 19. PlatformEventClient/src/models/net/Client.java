@@ -87,18 +87,18 @@ public class Client {
 		managerObserverWindow.refreshConcertList(concertList);
 	}
 	
-	public boolean[] buyTicketsbyConcert(int idConcert, int positionByVector)throws NullPointerException {
+	public void selectTicketsbyConcert(int idConcert, int positionByVector)throws NullPointerException {
 		for (Concert concert : concertList) {
 			if(concert.getId() == idConcert) {
 				concert.buyTicket(positionByVector);
 				managerObserverWindow.fillDialog(concert.getTickets());
-				return concert.getTickets();
+				return;
 			}
 		}
 		throw new NullPointerException(NO_FIND_CONCERT_MESSAGE);
 	}
 	
-	public Concert searchConcert(int idConcert) throws NullPointerException{
+	private Concert searchConcert(int idConcert) throws NullPointerException{
 		for (Concert concert : concertList) {
 			if(concert.getId() == idConcert) {
 				return concert;

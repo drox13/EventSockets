@@ -6,21 +6,11 @@ import util.CalendarUtil;
 
 public class Concert {
 	private int id;
-	private static int count;
 	private String name;
 	private boolean [] tickets;
 	private int numberTickets;
 	private Calendar date;
 	public static int number;
-	
-	public Concert(String name, int numberTickets, Calendar date) {
-		this.name = name;
-		this.numberTickets = numberTickets;
-		tickets = new boolean[numberTickets];
-		id = ++count;
-		number = numberTickets;
-		this.date = date;
-	}
 	
 	public void buyTicket(int positionByVector) {
 		tickets[positionByVector] = true;

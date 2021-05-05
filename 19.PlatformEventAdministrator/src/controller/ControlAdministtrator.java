@@ -50,6 +50,7 @@ public class ControlAdministtrator implements ActionListener{
 
 	private void createConcert() {
 		administrator.sendConcert(dialogRegisterConcert.getConcert());
+		dialogRegisterConcert.clearRegister();
 		refreshTable();
 	}
 

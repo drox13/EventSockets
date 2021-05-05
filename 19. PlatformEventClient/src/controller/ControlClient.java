@@ -15,6 +15,7 @@ import view.WindowClient;
 public class ControlClient implements ActionListener{
 	private static final String SERVER_OFF = "Servidor fuera de linea";
 	private static final String NULL_MESSAGE = "null";
+	
 	private Client client;
 	private WindowClient windowClient;
 	private ManagerObserverWindow managerObserverWindow;
@@ -44,7 +45,7 @@ public class ControlClient implements ActionListener{
 		case SEND_ID_CONCERT_AND_TICKET:
 			idTicket = ((JButton)e.getSource()).getName();
 			ticketsSelect.add(idTicket);
-			sendIdConcertAndTicket(idConcert, idTicket);
+			selectTicket(idConcert, idTicket);
 			break;
 		case CONFIRM_PURCHASE:
 			confirmPurchase();
@@ -70,9 +71,9 @@ public class ControlClient implements ActionListener{
 			}
 	}
 
-	private boolean[] sendIdConcertAndTicket(String idConcert, String idTicket) throws NullPointerException{
+	private void selectTicket(String idConcert, String idTicket) throws NullPointerException{
 		if(!idConcert.equals("")&& !idTicket.equals("")) {
-			return client.buyTicketsbyConcert(Integer.parseInt(idConcert), Integer.parseInt(idTicket));
+			client.selectTicketsbyConcert(Integer.parseInt(idConcert), Integer.parseInt(idTicket));
 		}else {
 			throw new NullPointerException(NULL_MESSAGE);
 		}

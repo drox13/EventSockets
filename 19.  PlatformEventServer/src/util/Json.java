@@ -58,7 +58,6 @@ public class Json {
 	}
 
 	public static ArrayList<String> convertStringtoArray(String convert){
-		System.out.println("se resivio");
 		ArrayList<String> aux = new ArrayList<>();
 		JsonParser parser = new JsonParser();
 		JsonArray array = parser.parse(convert).getAsJsonArray();
@@ -66,7 +65,6 @@ public class Json {
 			String primitive = jsonElement.getAsJsonPrimitive().getAsString();
 			aux.add(primitive);
 		}
-		System.out.println("salio asi:" + aux.toString());
 		return aux;
 	}
 }
